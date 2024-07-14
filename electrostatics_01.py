@@ -156,8 +156,8 @@ if True:
     t0 = tm.time()
 
     # geometry
-    Nx = 256
-    Ny = 256
+    Nx = 256        # column
+    Ny = 128        # row
     N = Nx * Ny
 
     # matrix A, vector V, vector b
@@ -191,33 +191,33 @@ if True:
             
             # SKIP at FDM
             if (j == 0 and i == 0) or (j == 0 and i == Nx-1) or (j == Ny-1 and i == 0) or (j == Ny-1 and i == Nx-1):
-                A[Ny*j + i, Ny*j + i] = 1.0
-                b[Ny*j + i, 0] = 0.0
+                A[Nx*j + i, Nx*j + i] = 1.0
+                b[Nx*j + i, 0] = 0.0
 
             else:
                 # boundary conditions
                 if node_id in BC.keys():
                     if BC[node_id][0] == 'D':
-                        A[Ny*j + i, Ny*j + i] = 1.0
-                        b[Ny*j + i, 0] = BC[node_id][1]
+                        A[Nx*j + i, Nx*j + i] = 1.0
+                        b[Nx*j + i, 0] = BC[node_id][1]
                     elif BC[node_id][0] == 'N':
                         if i == 0:
-                            A[Ny*j + i, Ny*j + i] = 1.0
-                            A[Ny*j + i, Ny*j + i + 1] = -1.0
-                            b[Ny*j + i, 0] = BC[node_id][1]
+                            A[Nx*j + i, Nx*j + i] = 1.0
+                            A[Nx*j + i, Nx*j + i + 1] = -1.0
+                            b[Nx*j + i, 0] = BC[node_id][1]
                         elif i == Nx-1:
-                            A[Ny*j + i, Ny*j + i] = 1.0
-                            A[Ny*j + i, Ny*j + i - 1] = -1.0
-                            b[Ny*j + i, 0] = BC[node_id][1]
+                            A[Nx*j + i, Nx*j + i] = 1.0
+                            A[Nx*j + i, Nx*j + i - 1] = -1.0
+                            b[Nx*j + i, 0] = BC[node_id][1]
 
                 # normal nodes
                 else:
-                    A[Ny*j + i, Ny*j + i] = -4.0
-                    A[Ny*j + i, Ny*j + i + 1] = 1.0
-                    A[Ny*j + i, Ny*j + i - 1] = 1.0
-                    A[Ny*j + i, Ny*(j + 1) + i] = 1.0
-                    A[Ny*j + i, Ny*(j - 1) + i] = 1.0
-                    b[Ny*j + i, 0] = 0.0                         
+                    A[Nx*j + i, Nx*j + i] = -4.0
+                    A[Nx*j + i, Nx*j + i + 1] = 1.0
+                    A[Nx*j + i, Nx*j + i - 1] = 1.0
+                    A[Nx*j + i, Nx*(j + 1) + i] = 1.0
+                    A[Nx*j + i, Nx*(j - 1) + i] = 1.0
+                    b[Nx*j + i, 0] = 0.0                         
 
     # time t1
     t1 = tm.time()
@@ -225,7 +225,7 @@ if True:
     # diect matrix solver
     if False:
         V = np.linalg.solve(A, b)
-        V = V.reshape((Nx, Ny))
+        V = V.reshape((Ny, Nx))
 
     # time t2
     t2 = tm.time()
@@ -235,7 +235,7 @@ if True:
         As = scs.csr_matrix(A)
         AsLU = scs.linalg.splu(As)
         Vs = AsLU.solve(b)
-        Vs = Vs.reshape((Nx, Ny))
+        Vs = Vs.reshape((Ny, Nx))
 
     # time t3
     t3 = tm.time()
@@ -255,9 +255,6 @@ if True:
           ax[1].grid(ls=':')
       ax.imshow(Vs)
       plt.show()
-
-
-
 
 
 
