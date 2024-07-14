@@ -155,9 +155,23 @@ if True:
     # time t0
     t0 = tm.time()
 
+    # constants
+    ep0 = 8.8541878176e-12    # F/m
+
     # geometry
-    Nx = 256        # column
-    Ny = 128        # row
+    Nx = 512                  # column
+    Ny = 128                   # row
+    Lx = Nx * 1.0e-9          # meter
+    Ly = Ny * 1.0e-9          # meter
+    dLx = Lx / (Nx-1)         # meter
+    dLy = Ly / (Ny-1)         # meter
+
+    # vector plot
+    x = np.linspace(0.0, Lx, Nx-1)
+    y = np.linspace(0.0, Ly, Ny-1)
+    X, Y = np.meshgrid(x, y)
+
+    # matrix size
     N = Nx * Ny
 
     # matrix A, vector V, vector b
@@ -173,8 +187,16 @@ if True:
             BC['%i,%i' % (j, i)] = ['D', 0.0]
     # Dirichlet BC, top
     for j in [Ny-1]:
-        for i in range(Nx):
+        for i in range(int(Nx/4.0*1.0), int(Nx/4.0*3.0)):
             BC['%i,%i' % (j, i)] = ['D', 1.0]
+    # Neumann BC, top
+    for j in [Ny-1]:
+        for i in range(int(Nx/4.0*1.0)):
+            BC['%i,%i' % (j, i)] = ['N', 0.0]
+    # Neumann BC, top
+    for j in [Ny-1]:
+        for i in range(int(Nx/4.0*3.0), Nx):
+            BC['%i,%i' % (j, i)] = ['N', 0.0]
     # Neumann BC, left
     for j in range(Ny):
         for i in [0]:
@@ -188,7 +210,7 @@ if True:
     for j in range(Ny):
         for i in range(Nx):
             node_id = '%i,%i' % (j, i)
-            
+
             # SKIP at FDM
             if (j == 0 and i == 0) or (j == 0 and i == Nx-1) or (j == Ny-1 and i == 0) or (j == Ny-1 and i == Nx-1):
                 A[Nx*j + i, Nx*j + i] = 1.0
@@ -209,6 +231,14 @@ if True:
                             A[Nx*j + i, Nx*j + i] = 1.0
                             A[Nx*j + i, Nx*j + i - 1] = -1.0
                             b[Nx*j + i, 0] = BC[node_id][1]
+                        elif j == 0:
+                            A[Nx*j + i, Nx*j + i] = 1.0
+                            A[Nx*j + i, Nx*(j + 1) + i] = -1.0
+                            b[Nx*j + i, 0] = BC[node_id][1]
+                        elif j == Ny-1:
+                            A[Nx*j + i, Nx*j + i] = 1.0
+                            A[Nx*j + i, Nx*(j - 1) + i] = -1.0
+                            b[Nx*j + i, 0] = BC[node_id][1]
 
                 # normal nodes
                 else:
@@ -217,7 +247,7 @@ if True:
                     A[Nx*j + i, Nx*j + i - 1] = 1.0
                     A[Nx*j + i, Nx*(j + 1) + i] = 1.0
                     A[Nx*j + i, Nx*(j - 1) + i] = 1.0
-                    b[Nx*j + i, 0] = 0.0                         
+                    b[Nx*j + i, 0] = 0.0
 
     # time t1
     t1 = tm.time()
@@ -237,6 +267,12 @@ if True:
         Vs = AsLU.solve(b)
         Vs = Vs.reshape((Ny, Nx))
 
+    # electric field
+    Ex = ( Vs[:, 1:] - Vs[:,:Nx-1] ) / dLx
+    Ey = ( Vs[1:, :] - Vs[:Ny-1,:] ) / dLy
+    Ex = (Ex[:Ny-1, :] + Ex[1:, :] ) / 2.0
+    Ey = (Ey[:, :Nx-1] + Ey[:, 1:] ) / 2.0
+
     # time t3
     t3 = tm.time()
 
@@ -247,13 +283,16 @@ if True:
 
     # plot
     if True:
-      fig, ax = plt.subplots(1, 1, figsize=(8,8))
+      fig, ax = plt.subplots(1, 4, figsize=(8,8))
       if False:
           ax[0].imshow(A)
           ax[0].grid(ls=':')
           ax[1].imshow(b)
           ax[1].grid(ls=':')
-      ax.imshow(Vs)
+      ax[0].imshow(Vs)
+      ax[1].imshow(Ex)
+      ax[2].imshow(Ey)
+      ax[3].quiver(Y, X, Ey, Ex)
       plt.show()
 
 
