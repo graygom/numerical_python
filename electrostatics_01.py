@@ -166,10 +166,14 @@ if True:
     dLx = Lx / (Nx-1)         # meter
     dLy = Ly / (Ny-1)         # meter
 
-    # vector plot
+    # electric field plot
     x = np.linspace(0.0, Lx, Nx-1)
     y = np.linspace(0.0, Ly, Ny-1)
-    X, Y = np.meshgrid(x, y)
+    X_E, Y_E = np.meshgrid(x, y)
+
+    x = np.linspace(0.0, Lx, Nx)
+    y = np.linspace(0.0, Ly, Ny)
+    X_V, Y_V = np.meshgrid(x, y)
 
     # matrix size
     N = Nx * Ny
@@ -182,11 +186,11 @@ if True:
     # Boundary Conditions, dictionary
     BC = {}
     # Dirichlet BC, bottom
-    for j in [0]:
+    for j in [0, 1, 2]:
         for i in range(Nx):
             BC['%i,%i' % (j, i)] = ['D', 0.0]
     # Dirichlet BC, top
-    for j in [Ny-1]:
+    for j in [Ny-6, Ny-5, Ny-4, Ny-3, Ny-2, Ny-1]:
         for i in range(int(Nx/4.0*1.0), int(Nx/4.0*3.0)):
             BC['%i,%i' % (j, i)] = ['D', 1.0]
     # Neumann BC, top
@@ -272,6 +276,7 @@ if True:
     Ey = ( Vs[1:, :] - Vs[:Ny-1,:] ) / dLy
     Ex = (Ex[:Ny-1, :] + Ex[1:, :] ) / 2.0
     Ey = (Ey[:, :Nx-1] + Ey[:, 1:] ) / 2.0
+    Eabs = np.sqrt(Ex**2 + Ey**2)
 
     # time t3
     t3 = tm.time()
@@ -283,17 +288,19 @@ if True:
 
     # plot
     if True:
-      fig, ax = plt.subplots(1, 4, figsize=(8,8))
+      fig, ax = plt.subplots(4, 1, figsize=(8,16))
       if False:
           ax[0].imshow(A)
           ax[0].grid(ls=':')
           ax[1].imshow(b)
           ax[1].grid(ls=':')
-      ax[0].imshow(Vs)
-      ax[1].imshow(Ex)
-      ax[2].imshow(Ey)
-      ax[3].quiver(Y, X, Ey, Ex)
+      if False:
+          ax[0].imshow(Vs)
+          ax[1].imshow(Ex)
+          ax[2].imshow(Ey)
+          ax.quiver(Y, X, Ey, Ex)
+      ax[0].imshow(Vs[:,1:-1])
+      ax[1].contour(X_V, Y_V, Vs, levels=20)
+      ax[2].imshow(Eabs[:,1:-1])
+      ax[3].contour(X_E, Y_E, Eabs, levels=200)
       plt.show()
-
-
-
