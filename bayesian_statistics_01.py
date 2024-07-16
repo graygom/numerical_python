@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 # discrete distribution
 #-----------------------------------------------------
 
-if True:
+if False:
     n = 5
     p = 0.5
     x = range(n+1)
@@ -26,5 +26,29 @@ if True:
     # plot
     plt.bar(x, y)
     plt.grid(ls=':')
-    plt.title('visualization of probabilty distribution')
+    plt.title('visualization of probabilty distribution (n=5)')
+
+
+
+-----------------------------------------------------
+# continuos distribution
+#-----------------------------------------------------
+
+if True:
+    n = 1000
+    p = 0.5
+    x = range(n+1)
+
+    # distribution function
+    y = [scsp.comb(n, i) * p**i * (1-p)**(n-i) for i in x]
+
+    # plot
+    plt.bar(x, y)
+    plt.xlim((430, 570))
+    plt.grid(ls=':')
+    plt.title('visualization of probabilty distribution (n=1000)')
+
+
+
+
 
