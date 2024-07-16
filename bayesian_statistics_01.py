@@ -50,5 +50,34 @@ if True:
 
 
 
+#-----------------------------------------------------
+# 1.3 normal distribution
+#-----------------------------------------------------
+
+if True:
+    # normal distribution function
+    def norm(x, mu, sigma):
+        return np.exp( -( ( x - mu ) / sigma )**2 / 2 ) / ( np.sqrt( 2 * np.pi ) * sigma )
+
+    # probability distribution
+    n = 1000
+    p = 0.5
+    x = np.arange(430, 571)
+    y1 = [scsp.comb(n, i) * p**i * (1-p)**(n-i) for i in x]
+
+    # normal distribution
+    mu = n/2
+    sigma = np.sqrt(mu/2)
+    y2 = norm(x, mu, sigma)
+
+    # plot
+    plt.bar(x, y1)
+    plt.plot(x, y2, 'k')
+    plt.xlim((430, 570))
+    plt.grid(ls=':')
+    plt.title('probability distribution vs. normal distribution')
+
+
+
 
 
