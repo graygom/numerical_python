@@ -12,7 +12,7 @@ import scipy.special as scsp
 import matplotlib.pyplot as plt
 
 #-----------------------------------------------------
-# discrete distribution
+# 1.1 discrete distribution
 #-----------------------------------------------------
 
 if False:
@@ -31,7 +31,7 @@ if False:
 
 
 -----------------------------------------------------
-# continuos distribution
+# 1.2 continuos distribution
 #-----------------------------------------------------
 
 if True:
