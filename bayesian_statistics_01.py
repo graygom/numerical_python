@@ -79,5 +79,14 @@ if True:
 
 
 
+#-----------------------------------------------------
+# 1.4 probability model & sampling
+#-----------------------------------------------------
+
+# a. preparation of data using pandas or NumPy
+# b. definition of probability model using PyMC
+# c. sampling using PyMC
+# d. statistical analysis of results using ArviZ
+
 
 
