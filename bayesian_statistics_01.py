@@ -10,6 +10,8 @@
 import numpy as np
 import scipy.special as scsp
 import matplotlib.pyplot as plt
+import pymc as pm
+import arviz as az
 
 #-----------------------------------------------------
 # 1.1 discrete distribution
@@ -34,7 +36,7 @@ if False:
 # 1.2 continuos distribution
 #-----------------------------------------------------
 
-if True:
+if False:
     n = 1000
     p = 0.5
     x = range(n+1)
@@ -54,7 +56,7 @@ if True:
 # 1.3 normal distribution
 #-----------------------------------------------------
 
-if True:
+if False:
     # normal distribution function
     def norm(x, mu, sigma):
         return np.exp( -( ( x - mu ) / sigma )**2 / 2 ) / ( np.sqrt( 2 * np.pi ) * sigma )
@@ -88,5 +90,8 @@ if True:
 # c. sampling using PyMC
 # d. statistical analysis of results using ArviZ
 
-
+if True:
+    # PyMC, ArviZ version check
+    print('Running on PyMC ver. %s' % pm.__version__)
+    print('Running on ArviZ ver. %s' % az.__version__)
 
