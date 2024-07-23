@@ -95,3 +95,10 @@ if True:
     print('Running on PyMC ver. %s' % pm.__version__)
     print('Running on ArviZ ver. %s' % az.__version__)
 
+    #
+    model = pm.Model()
+
+    #
+    with model:
+        # binomial distribution
+        x = pm.Binomial('x', p=0.5, n=5)
