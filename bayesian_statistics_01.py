@@ -22,7 +22,7 @@ if False:
     p = 0.5
     x = range(n+1)
   
-    # distribution function
+    # distribution function > binomial distribution, distribution of binary data
     y = [scsp.comb(n, i) * p**i * (1-p)**(n-i) for i in x]
 
     # plot
@@ -41,7 +41,7 @@ if False:
     p = 0.5
     x = range(n+1)
 
-    # distribution function
+    # distribution function > binomial distribution, distribution of binary data
     y = [scsp.comb(n, i) * p**i * (1-p)**(n-i) for i in x]
 
     # plot
@@ -61,13 +61,13 @@ if False:
     def norm(x, mu, sigma):
         return np.exp( -( ( x - mu ) / sigma )**2 / 2 ) / ( np.sqrt( 2 * np.pi ) * sigma )
 
-    # probability distribution
+    # probability distribution > binomial distribution, distribution of binary data
     n = 1000
     p = 0.5
     x = np.arange(430, 571)
     y1 = [scsp.comb(n, i) * p**i * (1-p)**(n-i) for i in x]
 
-    # normal distribution
+    # normal distribution, distribution of continuous data
     mu = n/2
     sigma = np.sqrt(mu/2)
     y2 = norm(x, mu, sigma)
@@ -100,5 +100,5 @@ if True:
 
     #
     with model:
-        # binomial distribution
+        # binomial distribution, distribution of binary data
         x = pm.Binomial('x', p=0.5, n=5)
