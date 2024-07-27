@@ -102,3 +102,6 @@ if True:
     with model:
         # binomial distribution, distribution of binary data
         x = pm.Binomial('x', p=0.5, n=5)
+
+        # sample prior predictive
+        prior_samples = pm.sample_prior_predictive(random_seed=42)
