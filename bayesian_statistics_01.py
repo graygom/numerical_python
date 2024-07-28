@@ -10,6 +10,7 @@
 import numpy as np
 import scipy.special as scsp
 import matplotlib.pyplot as plt
+import pandas as pd
 import pymc as pm
 import arviz as az
 
@@ -105,3 +106,13 @@ if True:
 
         # sample prior predictive
         prior_samples = pm.sample_prior_predictive(random_seed=42)
+
+        # analysis using numpy
+        x_samples = prior_samples['prior']['x'].values
+        print('type: ', type(x_samples))
+        print('shape: ', x_samples.shape)
+        print('values: ', x_samples, '\n')
+
+        # analysis using pandas
+        value_counts = pd.DataFrame( x_samples.reshape(-1) ).value_counts().sort_index()
+        print(value_counts)
