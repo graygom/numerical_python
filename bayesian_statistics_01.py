@@ -124,3 +124,32 @@ if True:
         # visualization using ArviZ
         ax = az.plot_dist(x_samples)
         ax.set_title('ArviZ visualization')
+
+
+
+#-----------------------------------------------------
+# 1.6 probability distribution & MyMC programming
+#-----------------------------------------------------
+
+if True:
+    #
+    model = pm.Model()
+
+    #
+    with model:
+        x = pm.Binomial('x', p=0.5, n=5)
+        prior_samples = pm.sample_prior_predictive(random_seed=42)
+
+    #
+    x_samples = prior_samples['prior']['x'].values
+
+    #
+    summary = az.summary(x_samples, kind='stats')
+    print(summary)
+
+    #
+    ax = az.plot_dist(x_samples)
+
+
+
+
