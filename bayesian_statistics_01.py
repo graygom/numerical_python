@@ -116,3 +116,11 @@ if True:
         # analysis using pandas
         value_counts = pd.DataFrame( x_samples.reshape(-1) ).value_counts().sort_index()
         print(value_counts)
+
+        # statistical analysis using ArviZ
+        summary = az.summary(prior_samples, kind='stats')
+        print(summary)
+
+        # visualization using ArviZ
+        ax = az.plot_dist(x_samples)
+        ax.set_title('ArviZ visualization')
