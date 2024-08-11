@@ -153,7 +153,7 @@ if True:
 
 
 #-----------------------------------------------------
-# 2.1 Bernoulli probability distribution
+# 2.1 Bernoulli discrete probability distribution
 #-----------------------------------------------------
 
 if True:
