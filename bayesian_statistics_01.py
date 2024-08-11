@@ -128,7 +128,7 @@ if True:
 
 
 #-----------------------------------------------------
-# 1.6 probability distribution & MyMC programming
+# 1.6 probability distribution & PyMC programming
 #-----------------------------------------------------
 
 if True:
@@ -150,6 +150,32 @@ if True:
     #
     ax = az.plot_dist(x_samples)
 
+
+
+#-----------------------------------------------------
+# 2.1 Bernoulli probability distribution
+#-----------------------------------------------------
+
+if True:
+    #
+    p = 0.5
+
+    model1 = pm.Model()
+
+    with model1:
+        x = pm.Bernoulli('x', p=p)
+        prior_samples1 = pm.sample_prior_predictive(random_seed=42)
+
+    # numpy array
+    x_samples1 = prior_samples1['prior']['x'].values
+    print(x_samples1)
+
+    # arviz statistical analysis
+    summary1 = az.summary(prior_samples1, kind='stats')
+    display(summary1)
+
+    ax = az.plot_dist(x_samples1)
+    ax.set_title('Bernoulli distribution')
 
 
 
