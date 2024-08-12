@@ -206,6 +206,29 @@ if True:
     ax = az.plot_dist(x_samples2)
     ax.set_title('binomial distribution p=%.2f n=%i' % (p, n))
 
+    #--------------------------
+
+    #
+    p = 0.5
+    n = 50
+
+    # PyMC
+    model3 = pm.Model()
+
+    with model3:
+      x = pm.Binomial('x', p=p, n=n)
+      prior_samples3 = pm.sample_prior_predictive(random_seed=42)
+
+    # Numpy
+    x_samples3 = prior_samples3['prior']['x'].values
+    print(x_samples3)
+
+    # ArviZ
+    summary3 = az.summary(prior_samples3, kind='stats')
+    display(summary3)
+
+    ax = az.plot_dist(x_samples3)
+    ax.set_title('binomial distribution p=%.2f n=%i' %  (p, n))
 
 
 
