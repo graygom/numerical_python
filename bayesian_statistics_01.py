@@ -179,3 +179,22 @@ if True:
 
 
 
+#-----------------------------------------------------
+# 2.2 binomial discrete probability distribution
+#-----------------------------------------------------
+
+if True:
+    #
+    p = 0.5
+    n = 5
+
+    model2 = pm.Model()
+
+    with model2:
+      x = pm.Binomial('x', p=p, n=n)
+
+
+
+
+
+
