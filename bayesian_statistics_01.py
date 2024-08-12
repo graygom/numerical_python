@@ -188,10 +188,23 @@ if True:
     p = 0.5
     n = 5
 
+    # PyMC
     model2 = pm.Model()
 
     with model2:
-      x = pm.Binomial('x', p=p, n=n)
+        x = pm.Binomial('x', p=p, n=n)
+        prior_samples2 = pm.sample_prior_predictive(random_seed=42)
+
+    # Numpy array
+    x_samples2 = prior_samples2['prior']['x'].values
+    print(x_samples2)
+
+    # ArviZ
+    summary2 = az.summary(prior_samples2, kind='stats')
+    display(summary2)
+
+    ax = az.plot_dist(x_samples2)
+    ax.set_title('binomial distribution p=%.2f n=%i' % (p, n))
 
 
 
