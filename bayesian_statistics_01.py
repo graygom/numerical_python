@@ -245,11 +245,10 @@ if True:
 
     bins = np.arange(4.0, 6.2, 0.2)
 
+    # KDE: kernel density estimation
     sns.histplot(df1, x='sepal_length', bins=bins, kde=True)
     plt.xticks(bins)
 
     #
-
-
 
 
