@@ -13,6 +13,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import pymc as pm
 import arviz as az
+import seaborn as sns
 
 #-----------------------------------------------------
 # 1.1 discrete distribution
@@ -230,6 +231,24 @@ if True:
     ax = az.plot_dist(x_samples3)
     ax.set_title('binomial distribution p=%.2f n=%i' %  (p, n))
 
+
+
+#-----------------------------------------------------
+# 2.3 normal continuous probability distribution
+#-----------------------------------------------------
+
+if True:
+    # setosa sepal length
+    df = sns.load_dataset('iris')
+
+    df1 = df.query('species == "setosa"')
+
+    bins = np.arange(4.0, 6.2, 0.2)
+
+    sns.histplot(df1, x='sepal_length', bins=bins, kde=True)
+    plt.xticks(bins)
+
+    #
 
 
 
