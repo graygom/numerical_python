@@ -246,9 +246,57 @@ if True:
     bins = np.arange(4.0, 6.2, 0.2)
 
     # KDE: kernel density estimation
+    fig = plt.subplots(1,1)
     sns.histplot(df1, x='sepal_length', bins=bins, kde=True)
     plt.xticks(bins)
 
+    #-----------------------------------------------------
+
+    def norm(x, mu, sigma):
+      return np.exp( -(x - mu)**2 / 2 ) / ( np.sqrt(2*np.pi) * sigma )
+
     #
+    mu1, sigma1 = 3.0, 2.0
+    mu2, sigma2 = 1.0, 3.0
+
+    #
+    x = np.arange(-8.0, 10.01, 0.01)
+
+    xticks = np.arange(-8.0, 11.0, 1.0)
+
+    #
+    fig, ax = plt.subplots(1,1)
+    ax.plot(x, norm(x, mu1, sigma1), label='$\mu$=%.1f, $\sigma$=%.1f' % (mu1, sigma1))
+    ax.plot(x, norm(x, mu2, sigma2), label='$\mu$=%.1f, $\sigma$=%.1f' % (mu2, sigma2))
+    plt.xticks(xticks, fontsize=12)
+    ax.legend(fontsize=12)
+    ax.grid(ls=':')
+    ax.set_title('normal distribution function')
+
+    #-----------------------------------------------------
+
+    mu = 0.0
+    sigma = 1.0
+
+    model4 = pm.Model()
+
+    with model4:
+        x = pm.Normal('x', mu=mu, sigma=sigma)
+        prior_samples4 = pm.sample_prior_predictive(random_seed=42)
+
+    #
+    x_samples4 = prior_samples4['prior']['x'].values
+    print(x_samples4)
+
+    fig, ax = plt.subplots(1,1)
+    ax = az.plot_dist(x_samples4)
+    ax.set_title('normal distribution $mu$=%.1f #sigma#=%.1f' % (mu, sigma))
+    ax.grid(ls=':')
+
+
+
+
+
+
 
 
