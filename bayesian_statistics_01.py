@@ -253,7 +253,7 @@ if True:
     #-----------------------------------------------------
 
     def norm(x, mu, sigma):
-      return np.exp( -(x - mu)**2 / 2 ) / ( np.sqrt(2*np.pi) * sigma )
+        return np.exp( -(x - mu)**2 / 2 ) / ( np.sqrt(2*np.pi) * sigma )
 
     #
     mu1, sigma1 = 3.0, 2.0
@@ -286,11 +286,20 @@ if True:
 
     #
     x_samples4 = prior_samples4['prior']['x'].values
-    print(x_samples4)
+    print(x_samples4[:,:100])
 
     fig, ax = plt.subplots(1,1)
     ax = az.plot_dist(x_samples4)
-    ax.set_title('normal distribution $mu$=%.1f #sigma#=%.1f' % (mu, sigma))
+    ax.set_title('normal distribution $mu$=%.1f 4sigma$=%.1f' % (mu, sigma))
+    ax.grid(ls=':')
+
+    #-----------------------------------------------------
+
+    bins = np.arange(-4.0, 4.5, 0.5)
+
+    fig, ax = plt.subplots(1, 1)
+    ax = az.plot_dist(x_samples4, kind='hist', hist_kwargs={'bins': bins})
+    ax.set_title('normal distribution $mu$=%.1f $sigma$%.1f' % (mu, sigma))
     ax.grid(ls=':')
 
 
