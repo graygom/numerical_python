@@ -8,6 +8,7 @@
 #
 
 import numpy as np
+import scipy.stats as scs
 import scipy.special as scsp
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -300,6 +301,38 @@ if True:
     fig, ax = plt.subplots(1, 1)
     ax = az.plot_dist(x_samples4, kind='hist', hist_kwargs={'bins': bins})
     ax.set_title('normal distribution $mu$=%.1f $sigma$%.1f' % (mu, sigma))
+    ax.grid(ls=':')
+
+    #-----------------------------------------------------
+
+    summary4 = az.summary(prior_samples4, kind='stats')
+    display(summary4)
+
+    #-----------------------------------------------------
+
+    norm_model = scs.norm(0.0, 1.0)
+    print(norm_model.cdf(-1.88), norm_model.cdf(1.88))
+
+    #-----------------------------------------------------
+
+    mu = 3.0
+    sigma = 2.0
+
+    model5 = pm.Model()
+
+    with model5:
+        x = pm.Normal('x', mu=mu, sigma=sigma)
+        prior_samples5 = pm.sample_prior_predictive(random_seed=42)
+
+    x_samples5 = prior_samples5['prior']['x'].values
+    print(x_samples5[:,:100])
+
+    summary5 = az.summary(prior_samples5)
+    print(summary5)
+
+    fig, ax = plt.subplots(1, 1)
+    ax = az.plot_dist(x_samples5)
+    ax.set_title('normal distribution $mu$=%.1f, $sigma$=%.1f' % (mu, sigma))
     ax.grid(ls=':')
 
 
