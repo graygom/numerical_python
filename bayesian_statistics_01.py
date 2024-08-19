@@ -337,6 +337,69 @@ if True:
 
 
 
+#-----------------------------------------------------
+# 2.4 uniform continuous probability distribution
+#-----------------------------------------------------
+
+if True:
+    #
+    lower = 0.0
+    upper = 1.0
+
+    #
+    model6 = pm.Model()
+
+    with model6:
+        x = pm.Uniform('x', lower=lower, upper=upper)
+        prior_samples6 = pm.sample_prior_predictive(random_seed=42)
+
+    #
+    x_samples6 = prior_samples6['prior']['x'].values
+    print(x_samples6[:,:100])
+
+    #
+    fig, ax = plt.subplots(1, 1)
+    ax = az.plot_dist(x_samples6)
+    ax.set_title('uniform probability distribution, continuous')
+    ax.grid(ls=':')
+
+    #
+    bins = np.arange(0.0, 1.1, 0.1)
+    fig, ax = plt.subplots(1, 1)
+    ax = az.plot_dist(x_samples6, kind='hist', hist_kwargs={'bins': bins})
+    ax.set_title('uniform probability distribution lower=%.1f upper=%.1f' % (lower, upper))
+    ax.grid(ls=':')
+
+    #
+    summary6 = az.summary(prior_samples6, kind='stats')
+    print(summary6)
+
+    #-----------------------------------------------------
+
+    lower = 0.1
+    upper = 0.9
+
+    model7 = pm.Model()
+
+    with model7:
+        x = pm.Uniform('x', lower=lower, upper=upper)
+        prior_samples7 = pm.sample_prior_predictive(random_seed=42)
+
+    x_samples7 = prior_samples7['prior']['x'].values
+    print(x_samples7[:,:100])
+
+    fig, ax = plt.subplots(1, 1)
+    ax = az.plot_dist(x_samples7)
+    ax.set_title('uniform probability distribution lower=%.1f upper=%.1f' % (lower, upper))
+    ax.grid(ls=':')
+
+    summary7 = az.summary(prior_samples7, kind='stats')
+    print(summary7)
+
+
+
+
+
 
 
 
