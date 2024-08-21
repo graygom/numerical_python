@@ -15,6 +15,7 @@ import pandas as pd
 import pymc as pm
 import arviz as az
 import seaborn as sns
+import math
 
 #-----------------------------------------------------
 # 1.1 discrete distribution
@@ -403,7 +404,25 @@ if True:
 #-----------------------------------------------------
 
 if True:
+    # alpha = # of success + 1
+    # beta = # of fail + 1
+    alpha = 2.0 + 1.0
+    beta = 3.0 + 1.0
+
     #
+    def Beta(p, alpha, beta):
+        C = math.gamma(alpha+beta-1) / math.gamma(alpha-1.0) / math.gamma(beta-1.0)
+        return C * p ** (alpha-1.0) * (1.0-p) ** (beta-1.0)
+
+    # 
+    p = np.arange(0.0, 1.01, 0.01)
+
+    fig, ax = plt.subplots(1, 1)
+    ax.plot(p, Beta(p, alpha, beta))
+    ax.set_title('Beta function $alpha$=%.1f beta=%.1f' % (alpha, beta))
+    ax.set_xlabel('p')
+    ax.set_ylabel('likelihood')
+    ax.grid(ls=':')
 
 
 
