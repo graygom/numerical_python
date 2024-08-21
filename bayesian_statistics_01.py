@@ -424,6 +424,36 @@ if True:
     ax.set_ylabel('likelihood')
     ax.grid(ls=':')
 
+    #-----------------------------------------------------
+
+    alpha = 2.0 + 1.0
+    beta = 3.0 + 1.0
+
+    model8 = pm.Model()
+    with model8:
+        p = pm.Beta('p', alpha=alpha, beta=beta)
+        prior_samples8 = pm.sample_prior_predictive(random_seed=42)
+
+    p_samples8 = prior_samples8['prior']['p'].values
+    print(p_samples8[:,:100])
+
+    fig, ax = plt.subplots(1, 1)
+    ax = az.plot_dist(p_samples8)
+    ax.set_title('beta distribution alpha=%.1f beta=%.1f' % (alpha, beta))
+    ax.grid(ls=':')
+
+    #-----------------------------------------------------
+
+    bins = np.arange(0.0, 1.1, 0.1)
+
+    fig, ax = plt.subplots(1, 1)
+    ax = az.plot_dist(p_samples8, kind='hist', hist_kwargs={'bins':bins})
+    ax.set_title('beta distribution alpha=%.1f beta=%.1f' % (alpha, beta))
+    ax.grid(ls=':')
+
+    summary8 = az.summary(prior_samples8, kind='stats')
+    print(summary8)
+
 
 
 
