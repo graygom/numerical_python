@@ -21,7 +21,7 @@ import math
 # 1.1 discrete distribution
 #-----------------------------------------------------
 
-if False:
+if True:
     n = 5
     p = 0.5
     x = range(n+1)
@@ -40,7 +40,7 @@ if False:
 # 1.2 continuos distribution
 #-----------------------------------------------------
 
-if False:
+if True:
     n = 1000
     p = 0.5
     x = range(n+1)
@@ -60,7 +60,7 @@ if False:
 # 1.3 normal distribution
 #-----------------------------------------------------
 
-if False:
+if True:
     # normal distribution function
     def norm(x, mu, sigma):
         return np.exp( -( ( x - mu ) / sigma )**2 / 2 ) / ( np.sqrt( 2 * np.pi ) * sigma )
@@ -453,6 +453,29 @@ if True:
 
     summary8 = az.summary(prior_samples8, kind='stats')
     print(summary8)
+
+    #-----------------------------------------------------
+
+    alpha = 20.0 + 1.0
+    beta = 30.0 + 1.0
+
+    model9 = pm.Model()
+
+    with model9:
+        p = pm.Beta('p', alpha=alpha, beta=beta)
+        prior_samples9 = pm.sample_prior_predictive(random_seed=42)
+
+    p_samples9 = prior_samples9['prior']['p'].values
+    print(p_samples9[:,:100])
+
+    fig, ax = plt.subplots(1, 1)
+    ax = az.plot_dist(p_samples9)
+    ax.set_title('beta distribution alpha=%1.f, beta=%.1f' % (alpha, beta))
+    ax.grid(ls=':')
+
+    summary9 = az.summary(prior_samples9, kind='stats')
+    print(summary9)
+
 
 
 
