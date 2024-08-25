@@ -478,6 +478,33 @@ if True:
 
 
 
+#-----------------------------------------------------
+# 2.6 half normal continuous probability distribution
+#-----------------------------------------------------
+
+if True:
+    #
+    sigma = 1.0
+
+    model10 = pm.Model()
+
+    with model10:
+        x = pm.HalfNormal('x', sigma=sigma)
+        prior_samples10 = pm.sample_prior_predictive(random_seed=42)
+
+    x_samples10 = prior_samples10['prior']['x'].values
+    print(x_samples10[0,:100])
+    print(x_samples10.size)
+
+    fig, ax = plt.subplots(1, 1)
+    ax = az.plot_dist(x_samples10)
+    ax.set_title('half normal distribution sigma=%.1f' % sigma)
+    ax.grid(ls=':')
+
+    summary10 = az.summary(prior_samples10, kind='stats')
+    print(summary10)
+
+
 
 
 
